@@ -7,7 +7,20 @@ import InputBox from './components/InputBox'
 
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [amount, setAmount] = useState(1)
+  const [convertFrom, setConvertFrom] = useState('usd')
+  const [convertTo, setConvertTo] = useState('bdt')
+  const [convertedAmount, setConvertedAmount] = useState(0)
+  const currencyList =  useCurrencyInfo(convertFrom)
+  const currencyKeys = Object.keys(currencyList)
+
+
+  const convert = () => {
+    console.log(setConvertedAmount( amount * currencyList[convertTo]))
+
+  }
+
+  //const convert = setConvertedAmount( amount * currencyList[convertTo])
 
 
   return (
@@ -22,13 +35,17 @@ function App() {
                 <form
                     onSubmit={(e) => {
                         e.preventDefault();
-                       
+                        convert()
                     }}
                 >
                     <div className="w-full mb-1">
                         <InputBox
-                            label="Convert From"
-                            
+                            label="Convert From" 
+                            amount={amount}
+                            currencyOptions = {currencyKeys}
+                            onAmountChange={(amount) => setAmount(amount)}
+                            onCurrencyChange={(convertFrom) => setConvertFrom(convertFrom)}
+                            selectCurrency={convertFrom}
                         />
                     </div>
                     <div className="relative w-full h-0.5">
@@ -43,10 +60,14 @@ function App() {
                     <div className="w-full mt-1 mb-4">
                         <InputBox
                             label="Converted To"
-                            
+                            amount={convertedAmount}
+                            currencyOptions = {currencyKeys}
+                            onAmountChange={(amount) => setAmount(amount)}
+                            onCurrencyChange={(convertTo) => setConvertTo(convertTo)}
+                            selectCurrency={convertTo}
                         />
                     </div>
-                    <button type="submit" className="w-full bg-blue-600 text-white px-4 py-3 rounded-lg">
+                    <button  type="submit" className="w-full bg-blue-600 text-white px-4 py-3 rounded-lg">
                         Convert 
                     </button>
                 </form>
